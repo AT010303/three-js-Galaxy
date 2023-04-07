@@ -3,6 +3,8 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'lil-gui'
 
+
+
 /**
  * Base
  */
@@ -14,6 +16,10 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+
+//texture
+const textureLoader = new THREE.TextureLoader()
+const particleT =  textureLoader.load('/textures/particles/4.png')
 
 /**
  * Test cube
@@ -123,6 +129,8 @@ const genrateGalaxy = ()=>{
      material  = new THREE.PointsMaterial({
         size : parameters.size,
         sizeAttenuation : true,
+        map : particleT,
+        transparent : true,
         depthWrite : false,
         blending : THREE.AdditiveBlending,
         //color : '#ff5588'
@@ -204,6 +212,22 @@ const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
 
+    Points.rotation.y = elapsedTime * 5
+    //Points.rotation.y = -elapsedTime 
+    // Points.rotation.x = elapsedTime * 0.2
+    // Points.rotation.z = elapsedTime * 0.2
+    //Points.rotation.y = Math.tan((elapsedTime * 1))
+    Points.rotation.y = -Math.tan((elapsedTime * 0.1))
+    // Points.rotation.x = Math.tan((elapsedTime * 0.2))
+
+    // for(let i = 0; i< parameters.count ; i++){
+    //     const i3 = i*3
+
+    //     const x = geometry.attributes.position.array[i3]
+    //     geometry.attributes.position.array[i3 + 1]= Math.cos(elapsedTime + x)
+    // }
+
+    geometry.attributes.position.needsUpdate = true
     // Update controls
     controls.update()
 
